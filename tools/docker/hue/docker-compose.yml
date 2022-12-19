@@ -5,13 +5,17 @@ services:
       image: gethue/hue:latest
       hostname: hue
       container_name: hue
-      dns: 8.8.8.8
+      #dns: 8.8.8.8
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
       ports:
-      - "8888:8888"
+        - "8888:8888"
+        - "8000:8000"
       volumes:
-        - ./hue.ini:/usr/share/hue/desktop/conf/z-hue.ini
+      #  - ./hue.ini:/usr/share/hue/desktop/conf/z-hue.ini
+        - $PWD/hue:/usr/share/hue/desktop/conf/
       depends_on:
-      - "database"
+        - "database"
   database:
       image: mysql:5.7
       ports:
@@ -24,7 +28,7 @@ services:
           MYSQL_ROOT_USER: root
           MYSQL_ROOT_PASSWORD: secret
           MYSQL_DATABASE: hue
-          MYSQL_USER: root
-          MYSQL_PASSWORD: secret
+          #MYSQL_USER: root
+          #MYSQL_PASSWORD: secret
 volumes:
   data:
